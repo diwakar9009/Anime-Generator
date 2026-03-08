@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Hindi dialogue anime comedy video generator with background music and voice narration.">
+  <title>AnimeComedyGen ⚡ Hindi Anime Comedy Video Generator</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div id="flash"></div>
+
+<!-- ══════════════════ HEADER ══════════════════ -->
+<header>
+  <div class="speed-lines"></div>
+  <h1>⚡ ANIME COMEDY GEN ⚡</h1>
+  <p>Hindi Dialogue • Background Music • Anime Style Comedy Videos</p>
+</header>
+
+<!-- ══════════════════ MAIN LAYOUT ══════════════════ -->
+<div class="main-layout">
+
+  <!-- ════ LEFT COLUMN ════ -->
+  <div>
+
+    <!-- ── Video Settings ── -->
+    <div class="panel audio-section">
+      <div class="panel-title">🎬 Video Settings</div>
+
+      <label for="videoTitle">Video Title</label>
+      <input type="text" id="videoTitle"
+        value="जब Teacher ने Double Homework दिया... 😭"
+        placeholder="आपके वीडियो का नाम…">
+
+      <label>Comedy Style</label>
+      <div class="chip-row" id="styleChips">
+        <button class="chip selected" data-style="shonen">Shonen Energy</button>
+        <button class="chip"          data-style="slice">Slice of Life</button>
+        <button class="chip"          data-style="chibi">Chibi Chaos</button>
+        <button class="chip"          data-style="meme">Anime Meme</button>
+        <button class="chip"          data-style="reaction">Reaction Face</button>
+      </div>
+
+      <label for="bgTheme">Background Theme</label>
+      <select id="bgTheme">
+        <option value="classroom">🏫 Classroom (क्लासरूम)</option>
+        <option value="street">🌆 Anime City Street</option>
+        <option value="sky">☁️ Dramatic Sky</option>
+        <option value="sakura">🌸 Sakura Park</option>
+        <option value="dojo">⛩️ Dojo / Temple</option>
+        <option value="space">🌌 Cosmic Space</option>
+      </select>
+
+      <label for="sceneDuration">Scene Duration</label>
+      <select id="sceneDuration">
+        <option value="2000">Fast — 2 seconds</option>
+        <option value="3000" selected>Normal — 3 seconds</option>
+        <option value="4500">Slow — 4.5 seconds</option>
+      </select>
+    </div>
+
+    <!-- ── Background Music ── -->
+    <div class="panel audio-section">
+      <div class="panel-title">🎵 Background Music</div>
+
+      <div class="audio-row">
+        <button class="toggle-btn" id="musicToggle">🔇 Music OFF</button>
+        <div class="slider-row">
+          <span>Vol</span>
+          <input type="range" id="musicVolume" min="0" max="1" step="0.05" value="0.35">
+          <span id="musicVolLabel">35%</span>
+        </div>
+      </div>
+
+      <label for="musicTheme">Music Theme</label>
+      <select id="musicTheme">
+        <option value="energetic">⚡ Energetic — Fast Shonen Beat</option>
+        <option value="chill">🌸 Chill Lofi — Relaxed Slice-of-Life</option>
+        <option value="dramatic">🔥 Dramatic — Intense Build-up</option>
+        <option value="silly">😂 Silly — Fast Comedy Quirks</option>
+        <option value="epic">🗡️ Epic Battle — Full Power Mode</option>
+      </select>
+
+      <p class="hint-text">🎹 Music is generated live in the browser using Web Audio API — no external files needed!</p>
+    </div>
+
+    <!-- ── Hindi Voice Dialogue ── -->
+    <div class="panel audio-section">
+      <div class="panel-title">🗣️ Hindi Voice Dialogue</div>
+
+      <div class="audio-row">
+        <button class="toggle-btn" id="ttsToggle">🔇 Voice OFF</button>
+        <button class="toggle-btn" id="testVoice" style="border-color:var(--yellow);color:var(--yellow)">▶ Test Voice</button>
+      </div>
+
+      <p class="hint-text" id="hindiVoiceHint">⏳ Loading voices… (install a Hindi voice in system settings for best results)</p>
+
+      <hr class="section-divider">
+
+      <div class="mini-label">Voice Speed</div>
+      <div class="audio-row">
+        <div class="slider-row">
+          <span>🐢</span>
+          <input type="range" id="ttsRate" min="0.5" max="2.0" step="0.1" value="1.0">
+          <span>🐇</span>
+        </div>
+        <span id="ttsRateLabel" style="font-weight:900;color:var(--cyan);min-width:32px">1.0×</span>
+      </div>
+
+      <div class="mini-label" style="margin-top:0.7rem">Voice Pitch</div>
+      <div class="audio-row">
+        <div class="slider-row">
+          <span>🔉</span>
+          <input type="range" id="ttsPitch" min="0.5" max="2.0" step="0.1" value="1.1">
+          <span>🔊</span>
+        </div>
+        <span id="ttsPitchLabel" style="font-weight:900;color:var(--cyan);min-width:32px">1.1</span>
+      </div>
+
+      <hr class="section-divider">
+
+      <div class="mini-label">🇮🇳 Hindi Dialogue Presets</div>
+      <div class="preset-row">
+        <select id="hindiPreset"></select>
+        <button class="insert-btn" id="insertPreset">➕ Insert</button>
+      </div>
+      <p class="hint-text">Select a preset and click Insert to paste it into the last scene's dialogue.</p>
+    </div>
+
+    <!-- ── Scene Editor ── -->
+    <div class="panel">
+      <div class="panel-title">🎭 Scenes</div>
+      <div class="scene-list" id="sceneList"></div>
+      <button class="add-scene-btn" onclick="addScene()">＋ Add Scene</button>
+      <button class="generate-btn"  onclick="generateVideo()">
+        <span class="btn-shine"></span>
+        ▶ GENERATE VIDEO
+      </button>
+    </div>
+
+  </div>
+  <!-- end left column -->
+
+  <!-- ════ RIGHT COLUMN — Preview ════ -->
+  <div class="panel preview-panel">
+    <div class="panel-title">📺 Preview</div>
+
+    <div id="canvas-wrap">
+      <canvas id="anime-canvas"></canvas>
+      <div class="recording-badge" id="recBadge">● REC</div>
+    </div>
+
+    <div class="scene-dots" id="sceneDots"></div>
+
+    <div class="preview-controls">
+      <button class="ctrl-btn"              onclick="prevScene()">⏮ Prev</button>
+      <button class="ctrl-btn active" id="playBtn" onclick="togglePlay()">⏸ Pause</button>
+      <button class="ctrl-btn"              onclick="nextScene()">Next ⏭</button>
+      <button class="ctrl-btn download-btn" onclick="downloadVideo()">⬇ Save Video</button>
+    </div>
+
+    <div class="status-bar" id="statusBar">Press Generate to create your video!</div>
+
+    <!-- Quick tips -->
+    <div style="margin-top:1rem;padding:0.75rem;background:rgba(255,255,255,0.03);border-radius:8px;border:1px solid var(--border)">
+      <div class="mini-label" style="margin-bottom:0.5rem">💡 Quick Tips</div>
+      <p class="hint-text" style="margin:0">
+        • Turn on <strong style="color:var(--cyan)">Music</strong> before pressing Generate<br>
+        • Enable <strong style="color:var(--pink)">Voice</strong> to hear Hindi dialogue per scene<br>
+        • Use Hindi presets for authentic comedy lines<br>
+        • <strong style="color:var(--yellow)">Save Video</strong> records and downloads a .webm clip
+      </p>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── Scripts (dependency order) ── -->
+<script src="js/constants.js"></script>
+<script src="js/renderer.js"></script>
+<script src="js/editor.js"></script>
+<script src="js/player.js"></script>
+<script src="js/recorder.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>
